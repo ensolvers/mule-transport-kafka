@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://www.mulesoft.org/schema/mule/kafka"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:mule="http://www.mulesoft.org/schema/mule/core"
+            xmlns:schemadoc="http://www.mulesoft.org/schema/mule/schemadoc"
+            targetNamespace="http://www.mulesoft.org/schema/mule/kafka"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified">
+
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:import namespace="http://www.mulesoft.org/schema/mule/core"
+                schemaLocation="http://www.mulesoft.org/schema/mule/core/3.7/mule.xsd" />
+    <xsd:import namespace = "http://www.mulesoft.org/schema/mule/schemadoc"
+                schemaLocation = "http://www.mulesoft.org/schema/mule/schemadoc/3.7/mule-schemadoc.xsd"/>
+
+    <xsd:annotation>
+        <xsd:documentation>Allows to receive and send events to Apache Kafka</xsd:documentation>
+        <xsd:appinfo>
+            <schemadoc:short-name>Kafka</schemadoc:short-name>
+            <schemadoc:page-title>Kafka Transport</schemadoc:page-title>
+            <schemadoc:transport-features
+            receiveEvents="true" dispatchEvents="false" responseEvents="true"
+                                          requestEvents="false"
+                                          transactions="false" streaming="false">
+                <schemadoc:inboundMEPs in-only="true" in-optional-out="true" in-out="true"/>
+                <schemadoc:outboundMEPs out-only="true" out-in="true" out-optional-in="true"/>
+            </schemadoc:transport-features>
+        </xsd:appinfo>
+    </xsd:annotation>
+
+    <xsd:element name="connector" type="kafkaConnectorType" substitutionGroup="mule:abstract-connector">
+        <xsd:annotation>
+            <xsd:documentation>
+                Allows to receive and send events to Apache Kafka
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+
+    <xsd:complexType name="kafkaConnectorType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:connectorType">
+                <xsd:attribute name="bootstrapServers" type="xsd:string" />
+                
+                <xsd:attribute name="producerAcks" type="xsd:string" />
+                <xsd:attribute name="producerRetries" type="mule:substitutableInt" />
+                <xsd:attribute name="producerBatchSize" type="mule:substitutableInt" />
+                <xsd:attribute name="producerLingerMS" type="mule:substitutableInt" />
+                <xsd:attribute name="producerBufferMemory" type="mule:substitutableInt" />
+                <xsd:attribute name="producerKeySerializer" type="xsd:string" />
+                <xsd:attribute name="producerValueSerializer" type="xsd:string" />
+                <xsd:attribute name="producerCompressionType" type="xsd:string" />
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <!--
+    The following define endpoint elements for this transport. Attributes for the endpoint can be defined at the section
+    at the bottom
+    -->
+    <xsd:element name="inbound-endpoint" type="inboundEndpointType" substitutionGroup="mule:abstract-inbound-endpoint"/>
+    <xsd:complexType name="inboundEndpointType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractInboundEndpointType">
+                <xsd:attribute name="topic" type="xsd:string" />
+                <xsd:attribute name="groupId" type="xsd:string" />
+                <xsd:attribute name="enableAutoCommit" type="xsd:string" />
+                <xsd:attribute name="autoCommitIntervalMS" type="xsd:string" />
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="outbound-endpoint" type="outboundEndpointType" substitutionGroup="mule:abstract-outbound-endpoint"/>
+    <xsd:complexType name="outboundEndpointType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractOutboundEndpointType">
+                <xsd:attribute name="topic" type="xsd:string" />
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="endpoint" type="globalEndpointType" substitutionGroup="mule:abstract-global-endpoint"/>
+    <xsd:complexType name="globalEndpointType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:globalEndpointType">
+                <xsd:attributeGroup ref="addressAttributes"/>
+                <xsd:attributeGroup ref="propertyAttributes"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:attributeGroup name="addressAttributes">
+    <!--
+        TODO define address attributes for this endpoints i.e. queue, host, port, etc
+        <xsd:attribute name="foo" type="xsd:string"/>
+    -->
+    </xsd:attributeGroup>
+
+    <xsd:attributeGroup name="propertyAttributes">
+         <!--
+        TODO define property attributes for this endpoint. These are properties that can configure the way the
+        transport behaves but are not used to create the endpoint address.
+        <xsd:attribute name="bar" type="xsd:string"/>
+    -->
+    </xsd:attributeGroup>
+
+</xsd:schema>
