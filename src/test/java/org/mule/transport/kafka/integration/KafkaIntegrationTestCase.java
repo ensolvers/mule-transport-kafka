@@ -2,6 +2,7 @@ package org.mule.transport.kafka.integration;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.mule.DefaultMuleMessage;
 import org.mule.api.MuleMessage;
 import org.mule.api.client.LocalMuleClient;
 import org.mule.tck.junit4.FunctionalTestCase;
@@ -27,7 +28,7 @@ public class KafkaIntegrationTestCase extends FunctionalTestCase {
 
 		LocalMuleClient client = muleContext.getClient();
 		for (int i = 0; i < 100; i++) {
-			client.dispatch("vm://in", payload + i, null);
+			client.dispatch("vm://in", new DefaultMuleMessage(payload + i, muleContext));
 		}
 		
 		Thread.sleep(1000 * 3);

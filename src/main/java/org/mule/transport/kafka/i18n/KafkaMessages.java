@@ -21,12 +21,5 @@ import org.mule.config.i18n.MessageFactory;
  */
 public class KafkaMessages extends MessageFactory
 {
-    private static final String BUNDLE_PATH = getBundlePath("kafka");
 
-    /*
-    public static Message exampleMessage()
-    {
-        return createMessage(BUNDLE_PATH, 1);
-    }
-    */
 }

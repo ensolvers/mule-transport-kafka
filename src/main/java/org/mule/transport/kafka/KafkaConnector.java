@@ -31,6 +31,15 @@ public class KafkaConnector extends AbstractConnector {
 
 	public static final String KAFKA = "kafka";
 
+	public static final int DEFAULT_PRODUCER_RETRIES = 0;
+	public static final int DEFAULT_PRODUCER_BATCH_SIZE = 16384;
+	public static final int DEFAULT_PRODUCER_BUFFER_MEMORY = 33554432;
+	public static final int DEFAULT_PRODUCER_LINGER_MS = 1;
+	public static final String DEFAULT_PRODUCER_ACKS = "all";
+	public static final String DEFAULT_PRODUCER_KEY_SERIALIZER = "org.apache.kafka.common.serialization.StringSerializer";
+	public static final String DEFAULT_PRODUCER_VALUE_SERIALIZER = "org.apache.kafka.common.serialization.StringSerializer";
+	public static final String DEFAULT_PRODUCER_COMPRESSION_TYPE = "gzip";
+
 	private volatile KafkaProducer<String, String> producer;
 
 	private String bootstrapServers;
@@ -47,14 +56,14 @@ public class KafkaConnector extends AbstractConnector {
 	public KafkaConnector(MuleContext context) {
 		super(context);
 
-		this.producerRetries = 0;
-		this.producerBatchSize = 16384;
-		this.producerBufferMemory = 33554432;
-		this.producerLingerMS = 1;
-		this.producerAcks = "all";
-		this.producerKeySerializer = "org.apache.kafka.common.serialization.StringSerializer";
-		this.producerValueSerializer = "org.apache.kafka.common.serialization.StringSerializer";
-		this.producerCompressionType = "gzip";
+		this.producerRetries = DEFAULT_PRODUCER_RETRIES;
+		this.producerBatchSize = DEFAULT_PRODUCER_BATCH_SIZE;
+		this.producerBufferMemory = DEFAULT_PRODUCER_BUFFER_MEMORY;
+		this.producerLingerMS = DEFAULT_PRODUCER_LINGER_MS;
+		this.producerAcks = DEFAULT_PRODUCER_ACKS;
+		this.producerKeySerializer = DEFAULT_PRODUCER_KEY_SERIALIZER;
+		this.producerValueSerializer = DEFAULT_PRODUCER_VALUE_SERIALIZER;
+		this.producerCompressionType = DEFAULT_PRODUCER_COMPRESSION_TYPE;
 	}
 
 	public void doInitialise() throws InitialisationException {
@@ -96,24 +105,10 @@ public class KafkaConnector extends AbstractConnector {
 		}
 	}
 	
-	public void closeProducer() {
-		if (this.producer != null) {
-			this.producer.close();
-		}
-	}
-
-	void dispatch(final ProducerRecord<String, String> record) {
-		basicSend(record);
-	}
-
 	void send(final ProducerRecord<String, String> record) {
-		basicSend(record);
-	}
-	
-	void basicSend(final ProducerRecord<String, String> record) {
 		producer.send(record);
 	}
-
+	
 	public String getProtocol() {
 		return KAFKA;
 	}

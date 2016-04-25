@@ -12,9 +12,8 @@
  */
 package org.mule.transport.kafka;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
+import org.junit.Assert;
 import org.mule.api.transport.Connector;
 import org.mule.transport.AbstractConnectorTestCase;
 

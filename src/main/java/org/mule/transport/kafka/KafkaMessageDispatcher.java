@@ -54,7 +54,7 @@ public class KafkaMessageDispatcher extends AbstractMessageDispatcher
     	return basicSend(event);
     }
     
-    public MuleMessage basicSend(MuleEvent event) throws Exception {
+    private MuleMessage basicSend(MuleEvent event) throws Exception {
     	String key = Integer.valueOf((int)Math.round(Math.random() * 100)).toString();
     	String value = event.getMessageAsString();
 
